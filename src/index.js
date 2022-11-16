@@ -31,18 +31,17 @@ try {
 }
 
 // routes
-app.get("/users", async (req, res) => {});
 app.post("/sign-up", async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
-        const targetUser = await usersCollection.findOne({email: email})
+        const targetUser = await usersCollection.findOne({ email: email });
         if (targetUser) {
-            return res.status(409).send('Email already in use')
+            return res.status(409).send("Email already in use");
         }
     } catch (err) {
-        console.log(err)
-        res.status(400).send('Could not connect to the database server')
+        console.log(err);
+        res.status(400).send("Could not connect to the database server");
     }
     // Create sign-up user schema
     const userSchema = joi.object({
@@ -65,19 +64,20 @@ app.post("/sign-up", async (req, res) => {
     const hashPassword = bcrypt.hashSync(password, salt);
 
     // Create user object
-    const user = { name, email, password: hashPassword , ins: [], outs: []};
+    const user = { name, email, password: hashPassword, wallet: [] };
 
     // Insert user on userCollection
     try {
-        await usersCollection.insertOne(user)
-        console.log(user)
+        await usersCollection.insertOne(user);
+        console.log(user);
     } catch (err) {
-        console.log(err)
-        res.status(404).send('It was not possible to register the user')
+        console.log(err);
+        res.status(404).send("It was not possible to register the user");
     }
 
     res.sendStatus(200);
 });
 app.post("/login", async (req, res) => {});
+
 
 app.listen(port, () => console.log(`App running on port ${port}`));
