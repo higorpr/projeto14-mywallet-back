@@ -29,13 +29,29 @@ export async function addWalletEntry(req, res) {
     // Update wallet with information sent through req.body
 }
 
-export function deleteWalletEntry(req, res) {
+export async function deleteWalletEntry(req, res) {
     const user = res.locals.user;
+    const {idx} = req.params;
+    console.log(user.wallet[idx])
+    console.log(user.wallet)
 
+    user.wallet.splice(idx,1)
+    console.log(user.wallet)
+
+    try {
+        await usersCollection.updateOne(
+            { _id: user._id },
+            { $set: user }
+        );
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send("Server failed connection");
+    }
+    res.status(200).send('Entry deleted from the wallet')
     // Delete Nth entry on wallet (N = array index)
 }
 
-export function updateWalletEntry(req, res) {
+export async function updateWalletEntry(req, res) {
     const user = res.locals.user;
 
     // Updtade Nth entry on wallet (N = array index)
