@@ -2,7 +2,7 @@ import { sessionsCollection, usersCollection } from "../database/db.js";
 
 export async function retrieveUserFromToken(req, res, next) {
     const { authorization } = req.headers;
-    const token = authorization.replace("Bearer ", "").trim();
+    const token = authorization?.replace("Bearer ", "").trim();
     let user;
 
     try {
