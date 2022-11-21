@@ -1,10 +1,10 @@
-import { userSchema } from "../models/userModel.js";
+import { entrySchema } from "../models/entryModel.js"
 
-export function userValidation(req, res, next) {
-    const user = req.body;
+export function walletEntryValidation(req, res, next) {
+    const entry = req.body
 
     // Create possible validation errors
-    const validationErrors = userSchema.validate(user, {
+    const validationErrors = entrySchema.validate(entry, {
         abortEarly: false,
     }).error;
 
@@ -15,4 +15,5 @@ export function userValidation(req, res, next) {
     }
 
     next()
+
 }
