@@ -10,11 +10,16 @@ export async function addWalletEntry(req, res) {
     const user = res.locals.user;
     const entry = req.body;
 
+    entry.date = Date.now()
+    console.log(entry);
+
     user.wallet.push(entry);
 
     try {
-        await usersCollection.updateOne({ _id: user._id }, { $set: user });
-        console.log(user);
+        await usersCollection.updateOne(
+            { _id: user._id },
+            { $set: user }
+        );
     } catch (err) {
         console.log(err);
         return res.status(500).send("Server failed connection");
